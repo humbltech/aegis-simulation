@@ -2,6 +2,26 @@
 
 Standalone simulation environment for testing Aegis AI agent security policies. Run realistic AI agent deployments with attack scenarios to validate your security controls.
 
+## One-Click Cloud Setup
+
+**No local resources needed!** Run in GitHub Codespaces with free Groq LLM:
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/humbltech/aegis-simulation?quickstart=1)
+
+1. Click the button above (or go to repo → Code → Codespaces → Create)
+2. Set your free [Groq API key](https://console.groq.com/keys):
+   ```bash
+   export GROQ_API_KEY=gsk_your_key
+   echo "GROQ_API_KEY=$GROQ_API_KEY" > .env
+   ```
+3. Start containers and run an incident:
+   ```bash
+   make incidents-up
+   make incident INCIDENT=replit
+   ```
+
+The Codespace comes with Docker, Python, and all dependencies pre-installed.
+
 ## Real-World Incident Simulations
 
 **NEW:** Replicate documented AI security incidents and see Aegis prevent them.

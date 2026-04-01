@@ -1,25 +1,47 @@
 {
   "name": "Aegis Simulation",
-  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11-bullseye",
 
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "dockerDashComposeVersion": "v2"
+    }
   },
 
   "forwardPorts": [4000, 5432, 8010, 8011, 8012, 8013, 8014],
+  "portsAttributes": {
+    "8010": { "label": "Replit Agent" },
+    "8011": { "label": "Kiro Agent" },
+    "8012": { "label": "EchoLeak Agent" },
+    "8013": { "label": "Cost Loop Agent" },
+    "8014": { "label": "Copilot Agent" },
+    "4000": { "label": "LiteLLM Gateway" },
+    "5432": { "label": "PostgreSQL" }
+  },
 
-  "postCreateCommand": "pip install -r requirements.txt && pip install -r incidents/requirements.txt",
+  "onCreateCommand": "pip install -r requirements.txt && pip install -r incidents/requirements.txt",
+
+  "postStartCommand": ".devcontainer/startup.sh",
 
   "customizations": {
     "vscode": {
       "extensions": [
         "ms-python.python",
         "ms-azuretools.vscode-docker"
-      ]
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
     }
   },
 
   "remoteEnv": {
     "GROQ_API_KEY": "${localEnv:GROQ_API_KEY}"
+  },
+
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
   }
 }
