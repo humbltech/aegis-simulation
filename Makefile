@@ -10,8 +10,8 @@ ATTACK ?= all
 DURATION ?= 24
 SPEED ?= 100
 
-# Docker Compose command (v2 uses "docker compose", v1 uses "$(DOCKER_COMPOSE)")
-DOCKER_COMPOSE := $(shell command -v $(DOCKER_COMPOSE) 2>/dev/null || echo "docker compose")
+# Docker Compose command (v2 uses "docker compose", v1 uses "docker-compose")
+DOCKER_COMPOSE := $(shell command -v docker-compose 2>/dev/null || echo "docker compose")
 
 # ============================================
 # ENVIRONMENT
