@@ -32,7 +32,7 @@ services:
       - "8010:8000"
     environment:
       - LLM_BASE_URL=${AEGIS_URL:-http://litellm:4000}/v1
-      - LLM_API_KEY=${LLM_API_KEY:-sk-fake-key}
+      - LLM_API_KEY=${LLM_API_KEY:-sk-simulation-key}
       - DATABASE_URL=postgresql://agent:agent_password@replit-db:5432/saastr_experiment
       - AGENT_MODE=${AGENT_MODE:-unprotected}
     depends_on:
@@ -62,7 +62,7 @@ services:
   #     - "8011:8000"
   #   environment:
   #     - LLM_BASE_URL=${AEGIS_URL:-http://litellm:4000}/v1
-  #     - LLM_API_KEY=${LLM_API_KEY:-sk-fake-key}
+  #     - LLM_API_KEY=${LLM_API_KEY:-sk-simulation-key}
   #     - AWS_ENDPOINT=http://kiro-mock-aws:8000
   #     - AGENT_MODE=${AGENT_MODE:-unprotected}
   #   depends_on:
@@ -97,7 +97,7 @@ services:
       - "8012:8000"
     environment:
       - LLM_BASE_URL=${AEGIS_URL:-http://litellm:4000}/v1
-      - LLM_API_KEY=${LLM_API_KEY:-sk-fake-key}
+      - LLM_API_KEY=${LLM_API_KEY:-sk-simulation-key}
       - FILE_SERVER_URL=http://echoleak-file-server:8000
       - AGENT_MODE=${AGENT_MODE:-unprotected}
     depends_on:
@@ -125,7 +125,7 @@ services:
       - "8013:8000"
     environment:
       - LLM_BASE_URL=${AEGIS_URL:-http://litellm:4000}/v1
-      - LLM_API_KEY=${LLM_API_KEY:-sk-fake-key}
+      - LLM_API_KEY=${LLM_API_KEY:-sk-simulation-key}
       - COST_TRACKER_URL=http://cost-tracker:8000
       - AGENT_MODE=${AGENT_MODE:-unprotected}
     depends_on:
@@ -151,7 +151,7 @@ services:
   #     - "8014:8000"
   #   environment:
   #     - LLM_BASE_URL=${AEGIS_URL:-http://litellm:4000}/v1
-  #     - LLM_API_KEY=${LLM_API_KEY:-sk-fake-key}
+  #     - LLM_API_KEY=${LLM_API_KEY:-sk-simulation-key}
   #     - GITHUB_URL=http://mock-github:8000
   #     - AGENT_MODE=${AGENT_MODE:-unprotected}
   #   depends_on:
