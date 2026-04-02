@@ -276,12 +276,21 @@ def main():
     console.print(f"  - meetings: {initial_stats['meetings']}")
     console.print(f"  - notes: {initial_stats['notes']}")
 
-    input("\n[Press Enter to start Phase 1: Unprotected attack simulation...]")
+    # Auto-continue if running non-interactively
+    if sys.stdin.isatty():
+        input("\n[Press Enter to start Phase 1: Unprotected attack simulation...]")
+    else:
+        console.print("\n[dim]Starting Phase 1: Unprotected attack simulation...[/dim]")
+        time.sleep(2)
 
     # Phase 1: Unprotected
     unprotected_before, unprotected_after = simulate_attack_unprotected()
 
-    input("\n[Press Enter to start Phase 2: Protected attack simulation...]")
+    if sys.stdin.isatty():
+        input("\n[Press Enter to start Phase 2: Protected attack simulation...]")
+    else:
+        console.print("\n[dim]Starting Phase 2: Protected attack simulation...[/dim]")
+        time.sleep(2)
 
     # Phase 2: Protected (would need Aegis running)
     # For now, we simulate the protection
