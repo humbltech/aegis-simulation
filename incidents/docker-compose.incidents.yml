@@ -132,29 +132,30 @@ services:
       - litellm
 
   # ============================================
-  # INCIDENT 5: GitHub Copilot RCE
+  # INCIDENT 5: GitHub Copilot RCE (TODO: Not yet implemented)
   # Source: CVE-2025-53773
   # ============================================
-
-  mock-github:
-    build: ./05-copilot-rce/mock_github
-    ports:
-      - "8023:8000"
-    volumes:
-      - ./05-copilot-rce/mock_github/repos:/app/repos
-
-  copilot-agent:
-    build: ./05-copilot-rce
-    ports:
-      - "8014:8000"
-    environment:
-      - LLM_BASE_URL=${AEGIS_URL:-http://litellm:4000}/v1
-      - LLM_API_KEY=${LLM_API_KEY:-sk-fake-key}
-      - GITHUB_URL=http://mock-github:8000
-      - AGENT_MODE=${AGENT_MODE:-unprotected}
-    depends_on:
-      - mock-github
-      - litellm
+  # Uncomment when 05-copilot-rce directory is created
+  #
+  # mock-github:
+  #   build: ./05-copilot-rce/mock_github
+  #   ports:
+  #     - "8023:8000"
+  #   volumes:
+  #     - ./05-copilot-rce/mock_github/repos:/app/repos
+  #
+  # copilot-agent:
+  #   build: ./05-copilot-rce
+  #   ports:
+  #     - "8014:8000"
+  #   environment:
+  #     - LLM_BASE_URL=${AEGIS_URL:-http://litellm:4000}/v1
+  #     - LLM_API_KEY=${LLM_API_KEY:-sk-fake-key}
+  #     - GITHUB_URL=http://mock-github:8000
+  #     - AGENT_MODE=${AGENT_MODE:-unprotected}
+  #   depends_on:
+  #     - mock-github
+  #     - litellm
 
   # ============================================
   # SHARED SERVICES
