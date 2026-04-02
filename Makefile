@@ -123,7 +123,7 @@ demo-compare:
 
 # Start incident simulation environment
 incidents-up:
-	$(DOCKER_COMPOSE) -f incidents/$(DOCKER_COMPOSE).incidents.yml up -d
+	$(DOCKER_COMPOSE) -f incidents/docker-compose.incidents.yml up -d
 	@echo ""
 	@echo "✓ Incident simulation environment started!"
 	@echo ""
@@ -137,13 +137,13 @@ incidents-up:
 	@echo "Next: make incident INCIDENT=replit"
 
 incidents-down:
-	$(DOCKER_COMPOSE) -f incidents/$(DOCKER_COMPOSE).incidents.yml down
+	$(DOCKER_COMPOSE) -f incidents/docker-compose.incidents.yml down
 
 incidents-logs:
-	$(DOCKER_COMPOSE) -f incidents/$(DOCKER_COMPOSE).incidents.yml logs -f
+	$(DOCKER_COMPOSE) -f incidents/docker-compose.incidents.yml logs -f
 
 incidents-reset:
-	$(DOCKER_COMPOSE) -f incidents/$(DOCKER_COMPOSE).incidents.yml down -v
+	$(DOCKER_COMPOSE) -f incidents/docker-compose.incidents.yml down -v
 	@echo "✓ Incident environment reset"
 
 # List available incidents
@@ -229,7 +229,7 @@ incidents-up-ollama:
 	@echo "Starting incidents with LOCAL Ollama..."
 	@pgrep -x ollama > /dev/null || (echo "Starting Ollama..." && ollama serve &)
 	@sleep 2
-	OLLAMA_HOST=http://host.docker.internal:11434 $(DOCKER_COMPOSE) -f incidents/$(DOCKER_COMPOSE).incidents.yml up -d
+	OLLAMA_HOST=http://host.docker.internal:11434 $(DOCKER_COMPOSE) -f incidents/docker-compose.incidents.yml up -d
 	@echo ""
 	@echo "✓ Incident environment started with Ollama!"
 	@echo "  Ollama: http://localhost:11434 (on your Mac)"
@@ -255,7 +255,7 @@ build:
 	$(DOCKER_COMPOSE) build
 
 build-incidents:
-	$(DOCKER_COMPOSE) -f incidents/$(DOCKER_COMPOSE).incidents.yml build
+	$(DOCKER_COMPOSE) -f incidents/docker-compose.incidents.yml build
 
 # ============================================
 # CLOUD-ONLY SETUP (No local Docker needed)
