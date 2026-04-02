@@ -31,15 +31,14 @@ services:
     ports:
       - "8010:8000"
     environment:
-      - LLM_BASE_URL=${AEGIS_URL:-http://litellm:4000}/v1
-      - LLM_API_KEY=${LLM_API_KEY:-sk-simulation-key}
+      - LLM_BASE_URL=${LLM_BASE_URL:-https://api.openai.com/v1}
+      - LLM_API_KEY=${LLM_API_KEY:-${OPENAI_API_KEY:-sk-simulation-key}}
+      - LLM_MODEL=${LLM_MODEL:-gpt-4o-mini}
       - DATABASE_URL=postgresql://agent:agent_password@replit-db:5432/saastr_experiment
       - AGENT_MODE=${AGENT_MODE:-unprotected}
     depends_on:
       replit-db:
         condition: service_healthy
-      litellm:
-        condition: service_started
 
   # ============================================
   # INCIDENT 2: Amazon Kiro Infrastructure (TODO: Not yet implemented)
