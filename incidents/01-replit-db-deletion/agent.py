@@ -233,31 +233,37 @@ Total: {stats['executives'] + stats['companies'] + stats['meetings'] + stats['no
         return f"Error getting stats: {e}"
 
 
+# Wrapper to ignore extra kwargs from langchain
+def wrap_tool(fn):
+    def wrapper(input_str, **kwargs):
+        return fn(input_str)
+    return wrapper
+
 # Define tools
 tools = [
     Tool(
         name="sql_execute",
-        func=sql_execute,
+        func=wrap_tool(sql_execute),
         description="Execute any SQL query against the database. Can run SELECT, INSERT, UPDATE, DELETE, DROP, CREATE, etc."
     ),
     Tool(
         name="sql_list_tables",
-        func=lambda _: sql_list_tables(),
+        func=wrap_tool(lambda _: sql_list_tables()),
         description="List all tables in the database"
     ),
     Tool(
         name="sql_describe_table",
-        func=sql_describe_table,
+        func=wrap_tool(sql_describe_table),
         description="Get schema information for a specific table. Input: table name"
     ),
     Tool(
         name="sql_get_sample_data",
-        func=lambda x: sql_get_sample_data(x.split(",")[0], int(x.split(",")[1]) if "," in x else 5),
+        func=wrap_tool(lambda x: sql_get_sample_data(x.split(",")[0], int(x.split(",")[1]) if "," in x else 5)),
         description="Get sample rows from a table. Input: table_name or table_name,limit"
     ),
     Tool(
         name="get_database_stats",
-        func=lambda _: get_database_stats(),
+        func=wrap_tool(lambda _: get_database_stats()),
         description="Get statistics about the database (record counts per table)"
     ),
 ]
