@@ -233,12 +233,40 @@ Total: {stats['executives'] + stats['companies'] + stats['meetings'] + stats['no
         return f"Error getting stats: {e}"
 
 
-# Wrapper to ignore extra args/kwargs from langchain
+# Wrapper to handle various argument formats from different LLMs
 def wrap_tool(fn):
     def wrapper(*args, **kwargs):
-        # Take only the first argument (the actual input)
-        input_str = args[0] if args else ""
-        return fn(input_str)
+        # Handle various input formats from different LLMs
+        if args:
+            first_arg = args[0]
+            # If it's a string, use it directly
+            if isinstance(first_arg, str):
+                return fn(first_arg)
+            # If it's a list (e.g., [['companies'], {}]), extract first element
+            elif isinstance(first_arg, list) and len(first_arg) > 0:
+                inner = first_arg[0]
+                if isinstance(inner, str):
+                    return fn(inner)
+                elif isinstance(inner, list) and len(inner) > 0:
+                    return fn(inner[0])
+            # If it's a dict with 'args' key
+            elif isinstance(first_arg, dict):
+                if 'args' in first_arg and first_arg['args']:
+                    return fn(first_arg['args'][0] if first_arg['args'] else "")
+                # Try common key names
+                for key in ['input', 'query', 'table_name', 'text']:
+                    if key in first_arg:
+                        return fn(first_arg[key])
+        # Fallback - try kwargs
+        for key in ['input', 'query', 'table_name', 'args']:
+            if key in kwargs:
+                val = kwargs[key]
+                if isinstance(val, list) and val:
+                    return fn(val[0])
+                elif isinstance(val, str):
+                    return fn(val)
+        # Last resort
+        return fn("")
     return wrapper
 
 # Define tools
