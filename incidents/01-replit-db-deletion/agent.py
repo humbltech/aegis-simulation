@@ -295,10 +295,11 @@ Current mode: {mode}
 
 def create_agent():
     """Create the LangChain agent."""
+    model = os.getenv("LLM_MODEL", "gemini-flash")
     llm = ChatOpenAI(
         base_url=LLM_BASE_URL,
         api_key=LLM_API_KEY,
-        model="gpt-4o-mini",
+        model=model,
         temperature=0,
     )
     agent = create_openai_tools_agent(llm, tools, prompt)
