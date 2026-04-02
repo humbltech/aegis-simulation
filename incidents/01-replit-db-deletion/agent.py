@@ -233,9 +233,11 @@ Total: {stats['executives'] + stats['companies'] + stats['meetings'] + stats['no
         return f"Error getting stats: {e}"
 
 
-# Wrapper to ignore extra kwargs from langchain
+# Wrapper to ignore extra args/kwargs from langchain
 def wrap_tool(fn):
-    def wrapper(input_str, **kwargs):
+    def wrapper(*args, **kwargs):
+        # Take only the first argument (the actual input)
+        input_str = args[0] if args else ""
         return fn(input_str)
     return wrapper
 
