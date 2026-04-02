@@ -42,31 +42,32 @@ services:
         condition: service_started
 
   # ============================================
-  # INCIDENT 2: Amazon Kiro Infrastructure
+  # INCIDENT 2: Amazon Kiro Infrastructure (TODO: Not yet implemented)
   # Source: Particula Tech Blog, Dec 2025
   # ============================================
-
-  kiro-mock-aws:
-    build: ./02-kiro-infrastructure/mock_aws
-    ports:
-      - "8020:8000"
-    environment:
-      - ENVIRONMENT=production
-    volumes:
-      - ./02-kiro-infrastructure/mock_aws/state:/app/state
-
-  kiro-agent:
-    build: ./02-kiro-infrastructure
-    ports:
-      - "8011:8000"
-    environment:
-      - LLM_BASE_URL=${AEGIS_URL:-http://litellm:4000}/v1
-      - LLM_API_KEY=${LLM_API_KEY:-sk-fake-key}
-      - AWS_ENDPOINT=http://kiro-mock-aws:8000
-      - AGENT_MODE=${AGENT_MODE:-unprotected}
-    depends_on:
-      - kiro-mock-aws
-      - litellm
+  # Uncomment when 02-kiro-infrastructure directory is created
+  #
+  # kiro-mock-aws:
+  #   build: ./02-kiro-infrastructure/mock_aws
+  #   ports:
+  #     - "8020:8000"
+  #   environment:
+  #     - ENVIRONMENT=production
+  #   volumes:
+  #     - ./02-kiro-infrastructure/mock_aws/state:/app/state
+  #
+  # kiro-agent:
+  #   build: ./02-kiro-infrastructure
+  #   ports:
+  #     - "8011:8000"
+  #   environment:
+  #     - LLM_BASE_URL=${AEGIS_URL:-http://litellm:4000}/v1
+  #     - LLM_API_KEY=${LLM_API_KEY:-sk-fake-key}
+  #     - AWS_ENDPOINT=http://kiro-mock-aws:8000
+  #     - AGENT_MODE=${AGENT_MODE:-unprotected}
+  #   depends_on:
+  #     - kiro-mock-aws
+  #     - litellm
 
   # ============================================
   # INCIDENT 3: EchoLeak Data Exfiltration
