@@ -3,13 +3,12 @@ model_list:
   # FREE CLOUD OPTIONS (RECOMMENDED - no local resources needed)
   # ============================================
 
-  # Groq - FREE tier, VERY FAST (500 tokens/sec!)
-  # Get free API key: https://console.groq.com/keys
-  # This is the BEST free option - runs Llama 3.1 in the cloud
-  - model_name: gpt-4o-mini  # Alias so agents work without code changes
+  # OpenAI GPT-4o-mini - RECOMMENDED for simulations
+  # Cheap ($0.15/1M input) and reliable
+  - model_name: gpt-4o-mini
     litellm_params:
-      model: groq/llama-3.1-8b-instant
-      api_key: os.environ/GROQ_API_KEY
+      model: openai/gpt-4o-mini
+      api_key: os.environ/OPENAI_API_KEY
 
   - model_name: groq-llama
     litellm_params:
@@ -45,13 +44,6 @@ model_list:
   # ============================================
   # CHEAP CLOUD OPTIONS (for testing)
   # ============================================
-
-  # GPT-4o-mini - $0.15/1M input, $0.60/1M output
-  # Good balance of cheap + capable
-  - model_name: gpt-4o-mini
-    litellm_params:
-      model: openai/gpt-4o-mini
-      api_key: os.environ/OPENAI_API_KEY
 
   # Gemini 2.0 Flash - FREE tier available
   # Get free API key: https://aistudio.google.com
