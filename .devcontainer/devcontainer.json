@@ -1,6 +1,6 @@
 {
   "name": "Aegis Simulation",
-  "image": "mcr.microsoft.com/devcontainers/python:3.11-bullseye",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
 
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
@@ -37,11 +37,5 @@
 
   "remoteEnv": {
     "GROQ_API_KEY": "${localEnv:GROQ_API_KEY}"
-  },
-
-  "hostRequirements": {
-    "cpus": 4,
-    "memory": "8gb",
-    "storage": "32gb"
   }
 }
