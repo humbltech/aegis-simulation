@@ -166,6 +166,8 @@ services:
     image: ghcr.io/berriai/litellm:main-latest
     ports:
       - "4000:4000"
+    env_file:
+      - ../.env
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY:-}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
