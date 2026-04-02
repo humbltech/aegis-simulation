@@ -233,68 +233,66 @@ Total: {stats['executives'] + stats['companies'] + stats['meetings'] + stats['no
         return f"Error getting stats: {e}"
 
 
-# Wrapper to handle various argument formats from different LLMs
-def wrap_tool(fn):
-    def wrapper(*args, **kwargs):
-        # Handle various input formats from different LLMs
-        if args:
-            first_arg = args[0]
-            # If it's a string, use it directly
-            if isinstance(first_arg, str):
-                return fn(first_arg)
-            # If it's a list (e.g., [['companies'], {}]), extract first element
-            elif isinstance(first_arg, list) and len(first_arg) > 0:
-                inner = first_arg[0]
-                if isinstance(inner, str):
-                    return fn(inner)
-                elif isinstance(inner, list) and len(inner) > 0:
-                    return fn(inner[0])
-            # If it's a dict with 'args' key
-            elif isinstance(first_arg, dict):
-                if 'args' in first_arg and first_arg['args']:
-                    return fn(first_arg['args'][0] if first_arg['args'] else "")
-                # Try common key names
-                for key in ['input', 'query', 'table_name', 'text']:
-                    if key in first_arg:
-                        return fn(first_arg[key])
-        # Fallback - try kwargs
-        for key in ['input', 'query', 'table_name', 'args']:
-            if key in kwargs:
-                val = kwargs[key]
-                if isinstance(val, list) and val:
-                    return fn(val[0])
-                elif isinstance(val, str):
-                    return fn(val)
-        # Last resort
-        return fn("")
-    return wrapper
+# Define tools using StructuredTool for proper OpenAI compatibility
+from pydantic import BaseModel, Field
+from typing import Optional
 
-# Define tools
+class QueryInput(BaseModel):
+    query: str = Field(description="The SQL query to execute")
+
+class TableInput(BaseModel):
+    table_name: str = Field(description="Name of the table")
+
+class SampleInput(BaseModel):
+    table_name: str = Field(description="Name of the table")
+    limit: int = Field(default=5, description="Number of rows to return")
+
+class EmptyInput(BaseModel):
+    pass
+
+def sql_execute_tool(query: str) -> str:
+    return sql_execute(query)
+
+def sql_list_tables_tool() -> str:
+    return sql_list_tables()
+
+def sql_describe_table_tool(table_name: str) -> str:
+    return sql_describe_table(table_name)
+
+def sql_get_sample_data_tool(table_name: str, limit: int = 5) -> str:
+    return sql_get_sample_data(table_name, limit)
+
+def get_database_stats_tool() -> str:
+    return get_database_stats()
+
 tools = [
-    Tool(
+    StructuredTool.from_function(
+        func=sql_execute_tool,
         name="sql_execute",
-        func=wrap_tool(sql_execute),
-        description="Execute any SQL query against the database. Can run SELECT, INSERT, UPDATE, DELETE, DROP, CREATE, etc."
+        description="Execute any SQL query against the database. Can run SELECT, INSERT, UPDATE, DELETE, DROP, CREATE, etc.",
+        args_schema=QueryInput,
     ),
-    Tool(
+    StructuredTool.from_function(
+        func=sql_list_tables_tool,
         name="sql_list_tables",
-        func=wrap_tool(lambda _: sql_list_tables()),
-        description="List all tables in the database"
+        description="List all tables in the database. Takes no arguments.",
     ),
-    Tool(
+    StructuredTool.from_function(
+        func=sql_describe_table_tool,
         name="sql_describe_table",
-        func=wrap_tool(sql_describe_table),
-        description="Get schema information for a specific table. Input: table name"
+        description="Get schema information for a specific table.",
+        args_schema=TableInput,
     ),
-    Tool(
+    StructuredTool.from_function(
+        func=sql_get_sample_data_tool,
         name="sql_get_sample_data",
-        func=wrap_tool(lambda x: sql_get_sample_data(x.split(",")[0], int(x.split(",")[1]) if "," in x else 5)),
-        description="Get sample rows from a table. Input: table_name or table_name,limit"
+        description="Get sample rows from a table.",
+        args_schema=SampleInput,
     ),
-    Tool(
+    StructuredTool.from_function(
+        func=get_database_stats_tool,
         name="get_database_stats",
-        func=wrap_tool(lambda _: get_database_stats()),
-        description="Get statistics about the database (record counts per table)"
+        description="Get statistics about the database (record counts per table). Takes no arguments.",
     ),
 ]
 
